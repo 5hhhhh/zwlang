@@ -35,16 +35,6 @@ vec = TfidfVectorizer(ngram_range=(1, 2), min_df=3, max_df=0.9, use_idf=1, smoot
 xTrain_tfidf = vec.fit_transform(xTrain)
 xTest_tfidf = vec.transform(xTest)
 yTrain = dataDropNa["label"]
-# 训练支持向量机模型
-from sklearn import svm
-lin_clf = svm.LinearSVC()
-lin_clf.fit(xTrain_tfidf, yTrain)
-# 预测测试集，并生成结果提交
-preds = lin_clf.predict(xTest_tfidf)
-test_pred = pd.DataFrame(preds)
-test_pred.columns = ["label"]
-test_pred["id"] = list(testData["id"])
-test_pred[["id", "label"]].to_csv('sub_svm_baseline.csv', index=None)
 # 训练逻辑回归模型
 clf = LogisticRegression(C=4, dual=False)
 clf.fit(xTrain_tfidf, yTrain)
